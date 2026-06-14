@@ -1,7 +1,7 @@
-# /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose-2.4.yml up -d
 version: '3.8'
-# docker-compose -f docker-compose-app.yml up -d
-# 你需要修改system为你自身系统的仓库名
+# 启动：在本文件所在目录执行（会自动加载同目录下的 .env）
+#   docker-compose -f docker-compose-app.yml up -d
+# 你需要修改 system 为你自身系统的仓库名；环境变量样例见 .env.example，详见 DEPLOY.md
 services:
   ai-agent-scaffold:
     image: system/ai-agent-scaffold:1.0-SNAPSHOT
@@ -12,6 +12,18 @@ services:
     environment:
       - TZ=PRC
       - SERVER_PORT=8091
+      # 激活 prod 配置（对应 application-prod.yml -> agent/prod-agent.yml）
+      - SPRING_PROFILES_ACTIVE=prod
+      # ===== AI Agent 智能体配置（prod-agent.yml 中的 ${VAR} 占位）=====
+      # 必填：缺失会触发启动期 fail-fast（占位无法解析）
+      - AI_API_KEY=${AI_API_KEY}
+      - BAIDU_SEARCH_API_KEY=${BAIDU_SEARCH_API_KEY}
+      - BAIDU_MAP_AK=${BAIDU_MAP_AK}
+      # 选填：未设置时使用 prod-agent.yml 中的默认值
+      - AI_API_BASE_URL=${AI_API_BASE_URL:-https://apis.itedus.cn}
+      - AI_API_COMPLETIONS_PATH=${AI_API_COMPLETIONS_PATH:-v1/chat/completions}
+      - AI_API_EMBEDDINGS_PATH=${AI_API_EMBEDDINGS_PATH:-v1/embeddings}
+      - AI_CHAT_MODEL=${AI_CHAT_MODEL:-gpt-4.1}
     volumes:
       - ./log:/data/log
     logging:

@@ -12,6 +12,12 @@ thread:
         block-queue-size: 5000
         policy: CallerRunsPolicy
 
+# AI Agent 配置；启动时导入智能体配置
+spring:
+  config:
+    import:
+      - classpath:agent/test-agent.yml
+
 # 数据库配置
 #spring:
 #  datasource:
