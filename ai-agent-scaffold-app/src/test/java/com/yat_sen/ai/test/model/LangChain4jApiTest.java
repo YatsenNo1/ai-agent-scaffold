@@ -1,5 +1,6 @@
 package com.yat_sen.ai.test.model;
 
+
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import lombok.extern.slf4j.Slf4j;
 
