@@ -36,6 +36,12 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 覆盖 Spring Boot 3.4.3 默认的 Jackson 2.18.2。
+             Google ADK / Spring AI 引入的 Jackson 3 databind 运行时会调用
+             JsonProperty.isRequired()，该方法在 jackson-annotations 2.18 中不存在（仅 2.19+ 有），
+             而 annotations 工件是 Jackson 2/3 共享的，导致 NoSuchMethodError。
+             升到 2.19.2 后 required() 与 isRequired() 同时存在，两套 Jackson 均可正常工作。 -->
+        <jackson-bom.version>2.19.2</jackson-bom.version>
     </properties>
 
     <developers>
@@ -118,29 +124,74 @@
 
             <!-- 工程模块 -->
             <dependency>
-                <groupId>org.example</groupId>
+                <groupId>com.yat_sen.ai</groupId>
                 <artifactId>ai-agent-scaffold-api</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>org.example</groupId>
+                <groupId>com.yat_sen.ai</groupId>
                 <artifactId>ai-agent-scaffold-domain</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>org.example</groupId>
+                <groupId>com.yat_sen.ai</groupId>
                 <artifactId>ai-agent-scaffold-infrastructure</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>org.example</groupId>
+                <groupId>com.yat_sen.ai</groupId>
                 <artifactId>ai-agent-scaffold-types</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>org.example</groupId>
+                <groupId>com.yat_sen.ai</groupId>
                 <artifactId>ai-agent-scaffold-trigger</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- Google ADK (无 BOM，按 1.4.0 逐个锁定版本) -->
+            <dependency>
+                <groupId>com.google.adk</groupId>
+                <artifactId>google-adk</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.adk</groupId>
+                <artifactId>google-adk-dev</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.adk</groupId>
+                <artifactId>google-adk-langchain4j</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.adk</groupId>
+                <artifactId>google-adk-spring-ai</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.adk.samples</groupId>
+                <artifactId>google-adk-sample-helloworld</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+
+            <!-- LangChain4j BOM -->
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring AI BOM -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
