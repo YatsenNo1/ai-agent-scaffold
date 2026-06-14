@@ -15,6 +15,18 @@
             <artifactId>xfg-wrench-starter-design-framework</artifactId>
         </dependency>
 
+        <!-- LangChain4j：装配节点构建大模型 API 客户端（OpenAiChatModel）所需 -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-open-ai</artifactId>
+        </dependency>
+
+        <!-- Spring AI：Spring AI 变体装配节点构建 OpenAiApi / OpenAiChatModel 所需 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
